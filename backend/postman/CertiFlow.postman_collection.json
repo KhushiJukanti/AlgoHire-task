@@ -1,0 +1,1792 @@
+{
+  "info": {
+    "name": "CertiFlow Backend - JavaScript MVC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run npm run seed, npm start, and npm run worker. Run folders 01–03 in order. Folder 04: poll the certificate list until jobs finish, then verify/download. Other folders contain optional actions and negative-state scenarios; do not run every folder blindly. Login requests store each role token; batch submission stores batchId and revision. Credentials are demo-only."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:7000",
+      "type": "string"
+    },
+    {
+      "key": "demoPassword",
+      "value": "CertiFlowDemo123!",
+      "type": "string"
+    },
+    {
+      "key": "batchId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "revision",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "certificateId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "verificationToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "downloadUrl",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "anikaToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "devToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "meeraToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kabirToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "nehaToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "farahToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Authentication",
+      "item": [
+        {
+          "name": "List demo users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-users",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - anika",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"anika@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('anikaToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - dev",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dev@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('devToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - meera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"meera@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('meeraToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - kabir",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"kabir@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('kabirToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - neha",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"neha@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('nehaToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Demo login - farah",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/demo-login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"farah@certiflow.demo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('farahToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Password login - Anika",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"anika@certiflow.demo\",\n  \"password\": \"{{demoPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('anikaToken', pm.response.json().token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Current user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/auth/me",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Create and submit 60-candidate batch",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/health",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "My centres",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/centres",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman Digital Skills Batch\",\n  \"course\": \"Digital Skills\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add 60 candidates (JSON)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/candidates",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"candidates\": [\n    {\n      \"candidateId\": \"P1\",\n      \"name\": \"Candidate 1\",\n      \"phone\": \"+919002000001\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P2\",\n      \"name\": \"Candidate 2\",\n      \"phone\": \"+919002000002\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P3\",\n      \"name\": \"Candidate 3\",\n      \"phone\": \"+919002000003\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P4\",\n      \"name\": \"Candidate 4\",\n      \"phone\": \"+919002000004\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P5\",\n      \"name\": \"Candidate 5\",\n      \"phone\": \"+919002000005\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P6\",\n      \"name\": \"Candidate 6\",\n      \"phone\": \"+919002000006\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P7\",\n      \"name\": \"Candidate 7\",\n      \"phone\": \"+919002000007\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P8\",\n      \"name\": \"Candidate 8\",\n      \"phone\": \"+919002000008\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P9\",\n      \"name\": \"Candidate 9\",\n      \"phone\": \"+919002000009\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P10\",\n      \"name\": \"Candidate 10\",\n      \"phone\": \"+919002000010\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P11\",\n      \"name\": \"Candidate 11\",\n      \"phone\": \"+919002000011\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P12\",\n      \"name\": \"Candidate 12\",\n      \"phone\": \"+919002000012\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P13\",\n      \"name\": \"Candidate 13\",\n      \"phone\": \"+919002000013\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P14\",\n      \"name\": \"Candidate 14\",\n      \"phone\": \"+919002000014\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P15\",\n      \"name\": \"Candidate 15\",\n      \"phone\": \"+919002000015\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P16\",\n      \"name\": \"Candidate 16\",\n      \"phone\": \"+919002000016\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P17\",\n      \"name\": \"Candidate 17\",\n      \"phone\": \"+919002000017\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P18\",\n      \"name\": \"Candidate 18\",\n      \"phone\": \"+919002000018\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P19\",\n      \"name\": \"Candidate 19\",\n      \"phone\": \"+919002000019\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P20\",\n      \"name\": \"Candidate 20\",\n      \"phone\": \"+919002000020\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P21\",\n      \"name\": \"Candidate 21\",\n      \"phone\": \"+919002000021\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P22\",\n      \"name\": \"Candidate 22\",\n      \"phone\": \"+919002000022\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P23\",\n      \"name\": \"Candidate 23\",\n      \"phone\": \"+919002000023\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P24\",\n      \"name\": \"Candidate 24\",\n      \"phone\": \"+919002000024\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P25\",\n      \"name\": \"Candidate 25\",\n      \"phone\": \"+919002000025\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P26\",\n      \"name\": \"Candidate 26\",\n      \"phone\": \"+919002000026\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P27\",\n      \"name\": \"Candidate 27\",\n      \"phone\": \"+919002000027\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P28\",\n      \"name\": \"Candidate 28\",\n      \"phone\": \"+919002000028\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P29\",\n      \"name\": \"Candidate 29\",\n      \"phone\": \"+919002000029\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P30\",\n      \"name\": \"Candidate 30\",\n      \"phone\": \"+919002000030\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P31\",\n      \"name\": \"Candidate 31\",\n      \"phone\": \"+919002000031\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P32\",\n      \"name\": \"Candidate 32\",\n      \"phone\": \"+919002000032\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P33\",\n      \"name\": \"Candidate 33\",\n      \"phone\": \"+919002000033\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P34\",\n      \"name\": \"Candidate 34\",\n      \"phone\": \"+919002000034\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P35\",\n      \"name\": \"Candidate 35\",\n      \"phone\": \"+919002000035\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P36\",\n      \"name\": \"Candidate 36\",\n      \"phone\": \"+919002000036\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P37\",\n      \"name\": \"Candidate 37\",\n      \"phone\": \"+919002000037\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P38\",\n      \"name\": \"Candidate 38\",\n      \"phone\": \"+919002000038\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P39\",\n      \"name\": \"Candidate 39\",\n      \"phone\": \"+919002000039\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P40\",\n      \"name\": \"Candidate 40\",\n      \"phone\": \"+919002000040\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P41\",\n      \"name\": \"Candidate 41\",\n      \"phone\": \"+919002000041\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P42\",\n      \"name\": \"Candidate 42\",\n      \"phone\": \"+919002000042\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P43\",\n      \"name\": \"Candidate 43\",\n      \"phone\": \"+919002000043\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P44\",\n      \"name\": \"Candidate 44\",\n      \"phone\": \"+919002000044\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P45\",\n      \"name\": \"Candidate 45\",\n      \"phone\": \"+919002000045\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P46\",\n      \"name\": \"Candidate 46\",\n      \"phone\": \"+919002000046\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P47\",\n      \"name\": \"Candidate 47\",\n      \"phone\": \"+919002000047\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P48\",\n      \"name\": \"Candidate 48\",\n      \"phone\": \"+919002000048\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P49\",\n      \"name\": \"Candidate 49\",\n      \"phone\": \"+919002000049\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P50\",\n      \"name\": \"Candidate 50\",\n      \"phone\": \"+919002000050\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P51\",\n      \"name\": \"Candidate 51\",\n      \"phone\": \"+919002000051\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P52\",\n      \"name\": \"Candidate 52\",\n      \"phone\": \"+919002000052\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P53\",\n      \"name\": \"Candidate 53\",\n      \"phone\": \"+919002000053\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P54\",\n      \"name\": \"Candidate 54\",\n      \"phone\": \"+919002000054\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P55\",\n      \"name\": \"Candidate 55\",\n      \"phone\": \"+919002000055\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P56\",\n      \"name\": \"Candidate 56\",\n      \"phone\": \"+919002000056\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P57\",\n      \"name\": \"Candidate 57\",\n      \"phone\": \"+919002000057\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P58\",\n      \"name\": \"Candidate 58\",\n      \"phone\": \"+919002000058\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P59\",\n      \"name\": \"Candidate 59\",\n      \"phone\": \"+919002000059\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    },\n    {\n      \"candidateId\": \"P60\",\n      \"name\": \"Candidate 60\",\n      \"phone\": \"+919002000060\",\n      \"courseCompletedOn\": \"2026-01-01\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get candidates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/candidates?limit=100",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submit batch",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/submit",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Approvals in order",
+      "item": [
+        {
+          "name": "Approve - dev",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{devToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"revision\": {{revision}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve - meera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{meeraToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"revision\": {{revision}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve - neha",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nehaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"revision\": {{revision}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve - farah",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"approve\",\n  \"revision\": {{revision}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Certificates and delivery",
+      "item": [
+        {
+          "name": "List certificates (poll until available)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/certificates?limit=100",
+            "description": "Issuance runs asynchronously. Repeat until a certificate is present."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const c = pm.response.json().certificates?.[0]; if(c) { pm.collectionVariables.set('certificateId', c._id); pm.collectionVariables.set('verificationToken', c.verificationToken); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List delivery statuses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/deliveries?limit=100",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Certificate details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Public verification - no login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/verify/{{verificationToken}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authenticated PDF download",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}/pdf",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create candidate download link",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}/download-link",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.collectionVariables.set('downloadUrl', pm.response.json().url);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Candidate PDF download - signed link",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{downloadUrl}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Inspect mock WhatsApp message",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}/mock-message",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Batch audit and decisions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/history",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submitted revision snapshots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/revisions",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Browse and review",
+      "item": [
+        {
+          "name": "List batches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches?page=1&limit=20",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get batch",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Review inbox - dev",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{devToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/inbox",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Review inbox - neha",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nehaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/inbox",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Review inbox - farah",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/inbox",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "State dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/state/dashboard",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Overdue escalations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/state/escalations",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Queue status and failed jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/state/jobs",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Optional draft edits and return/reject flows",
+      "item": [
+        {
+          "name": "Create another draft",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Correction Demo Batch\",\n  \"course\": \"Digital Skills\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Import spreadsheet (replace roster)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/candidates/import",
+            "description": "Select samples/candidates.csv or an XLSX file in the file field. Draft/returned batches only. Entire roster is replaced atomically.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Validate spreadsheet only",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/candidates/import?validateOnly=true",
+            "description": "Select samples/candidates.csv or an XLSX file in the file field. Draft/returned batches only. Entire roster is replaced atomically.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit draft or returned batch",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Corrected Batch\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submit or resubmit (resets approvals)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/submit",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "const b = pm.response.json().batch; if (b) { pm.collectionVariables.set('batchId', b._id); pm.collectionVariables.set('revision', b.revision); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Send back - district officer Meera",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{meeraToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"return\",\n  \"revision\": {{revision}},\n  \"reason\": \"Correct the candidate details\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reject - district officer Dev",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{devToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/batches/{{batchId}}/decisions",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"reject\",\n  \"revision\": {{revision}},\n  \"reason\": \"Assessment evidence is invalid\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Optional recovery and revocation",
+      "item": [
+        {
+          "name": "Retry failed delivery",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}/retry-delivery",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Retry failed issuance",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/state/batches/{{batchId}}/retry-issuance",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Revoke certificate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{farahToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/certificates/{{certificateId}}/revoke",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Certificate was issued against invalid assessment evidence\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify revoked certificate",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{baseUrl}}/api/verify/{{verificationToken}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "pm.test('Revoked immediately', () => pm.expect(pm.response.json().valid).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "08 - Live updates (long-lived SSE)",
+      "item": [
+        {
+          "name": "Connect SSE - Anika",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anikaToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/api/events",
+            "description": "Keep open while another request changes a batch. Frontend uses fetch streaming with Authorization; reconnect and refetch on ready/reconnect."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', () => pm.expect(pm.response.code).to.be.within(200, 299));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

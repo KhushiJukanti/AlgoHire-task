@@ -1,0 +1,4 @@
+candidateId,name,phone,courseCompletedOn
+C001,Asha Rao,+919000000001,2026-01-01
+C002,R,not-a-phone,2026-02-31
+C001,Duplicate Candidate,+919000000003,2026-01-01

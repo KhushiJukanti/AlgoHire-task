@@ -1,0 +1,6 @@
+{
+  "name": "CertiFlow",
+  "description": "Skilling certificate issuance, multi-stage review, delivery tracking, and public verification platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
